@@ -1,10 +1,10 @@
 [project]
-name = "agent"
+name = "agentsTelegram"
 version = "0.1.0"
 description = "Simple Telegram bot to run Python files remotely and return output or errors."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "pytelegrambotapi>=4.34.0",
+    "pytelegrambotapi>=4.36.0",
     "pytest>=9.1.1",
 ]
