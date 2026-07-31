@@ -11,4 +11,4 @@ propcache==0.5.2
 pyTelegramBotAPI==4.36.0
 requests==2.34.2
 urllib3==2.7.0
-yarl==1.24.2
+yarl==1.24.5
