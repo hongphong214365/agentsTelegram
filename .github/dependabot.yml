@@ -2,7 +2,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # Dùng chung cho pip, uv, poetry
+  - package-ecosystem: "uv" 
     directory: "/"           # Vị trí chứa file pyproject.toml hoặc requirements.txt
     schedule:
       interval: "weekly"     # Tần suất quét: "daily" (hàng ngày), "weekly" (hàng tuần), hoặc "monthly" (hàng tháng)
