@@ -1,0 +1,38 @@
+name: Dependabot Auto-Sync uv
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+jobs:
+  sync-requirements:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v9
+
+      - name: Export requirements.txt from uv.lock
+        run: |
+          #Export trực tiếp từ uv.lock ra requirements.txt
+          uv export --format requirements-txt --output-file requirements.txt --no-hashes
+
+      - name: Commit changes
+        run: |
+          git config local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config local user.name "github-actions[bot]"
+          
+          git add requirements.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(deps): export updated requirements.txt"
+            git push
+          fi
