@@ -1,0 +1,60 @@
+name: "CodeQL Analysis"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '20 22 * * 4'
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Phân tích các file mã nguồn Python
+          - language: python
+            build-mode: none
+          
+          # Phân tích các file GitHub Actions (.github/workflows/*.yml)
+          - language: actions
+            build-mode: none
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    # 1. Khởi tạo môi trường uv
+    - name: Install uv
+      uses: astral-sh/setup-uv@v9
+      with:
+        enable-cache: true
+
+    # 2. Cài đặt Python & dependencies qua uv
+    - name: Set up Python & Install dependencies
+      run: |
+        uv python install
+        uv sync --all-extras --dev || true
+
+    # 3. Khởi tạo công cụ CodeQL
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v4
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+
+    # 4. Thực thi phân tích CodeQL
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v4
+      with:
+        category: "/language:${{ matrix.language }}"
