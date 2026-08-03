@@ -15,5 +15,6 @@ def register_start(bot: telebot.TeleBot):
             "/ping - Kiểm tra nhanh kết nối\n"
             "/run <tên_file.py> - Thực thi một file Python\n"
             "/start - Hiển thị hướng dẫn này\n"
-            "/log - Xem 20 dòng log gần nhất",
+            "/log - Xem 20 dòng log gần nhất\n"
+            "/status - Xem trạng thái chi tiết của bot (thử nghiệm)",
         )

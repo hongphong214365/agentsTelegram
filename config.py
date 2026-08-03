@@ -12,7 +12,7 @@ LOG_LINES = 20
 # Cấp độ ghi log.
 LEVEL = logging.INFO
 # Giới hạn thời gian chạy.
-run_timeout = 30
+RUN_TIMEOUT = 30
 # Đuôi file.
 FILE_EXTENSION = ".py"
 if not TOKEN:
