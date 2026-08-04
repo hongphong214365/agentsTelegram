@@ -1,8 +1,13 @@
-# Cấu hình Dependabot tự động kiểm tra cập nhật thư viện Python
-
 version: 2
 updates:
-  - package-ecosystem: "uv" 
-    directory: "/"           # Vị trí chứa file pyproject.toml hoặc requirements.txt
+  # 1. Tự động kiểm tra và update GitHub Actions (bao gồm astral-sh/setup-uv)
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: "weekly"     # Tần suất quét: "daily" (hàng ngày), "weekly" (hàng tuần), hoặc "monthly" (hàng tháng)
+      interval: "weekly" # Kiểm tra hàng tuần
+
+  # 2. Tự động update Python dependencies qua uv
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly" 
