@@ -1,171 +1,71 @@
-# agentsTelegram-
+# agentsTelegram
 
-Simple Telegram bot to run Python files remotely and return output or errors.
+A simple Telegram bot to run Python files remotely and return output or errors.
 
-[Tiếng việt](README.md)
+[Tiếng Việt](README.md)
+
 ## Features
 
-* Run Python files remotely through Telegram.
+* Run Python files remotely via Telegram.
 * Receive program output directly in Telegram.
-* Receive error messages if execution fails.
-* Restrict access to a specific Telegram account using an admin ID.
-* Easy configuration using environment variables.
-
-## Commands
-
-The bot supports the following commands (most actions are restricted to the configured `TELEGRAM_ADMIN_ID`):
-
-* `/start` - Displays a welcome message and a list of available commands (Admin only).
-* `/ping` - Checks if the bot is online (responds with "online", open to all).
-* `/run <file_name.py>` - Executes a Python file in the project folder and returns the output or error (Admin only).
-* `/log` - Displays the last 20 lines of the bot's log (Admin only).
+* Error notifications on execution failure.
+* Restricted access using a Telegram Admin ID.
 
 ## Requirements
 
 * Python 3.10 or newer
-* Telegram account
 * Telegram Bot Token
 
-## Getting a Telegram Bot Token
+## Installation
 
-1. Open Telegram.
-2. Search for **@BotFather**.
-3. Send the command:
-
-```text
-/newbot
-```
-
-4. Follow the instructions:
-
-   * Enter a bot name.
-   * Enter a unique username ending with `bot`.
-
-Example:
-
-```text
-My Python Agent
-my_python_agent_bot
-```
-
-5. BotFather will send you a token similar to:
-
-```text
-1234567890:AAExampleTokenHere
-```
-
-Copy this token. You will need it later.
-
-## Getting Your Telegram Chat ID
-
-### Method 1: Using @userinfobot
-
-1. Search for **@userinfobot** on Telegram.
-2. Press Start.
-3. The bot will display information including your ID.
-
-Example:
-
-```text
-Id: 123456789
-```
-
-Use this number as your admin ID.
-
-## Configure Environment Variables
-
-### Windows CMD
-
-```cmd
-set TELEGRAM_TOKEN=1234567890:AAExampleTokenHere
-set TELEGRAM_ADMIN_ID=123456789
-```
-
-### Windows PowerShell
-
-```powershell
-$env:TELEGRAM_TOKEN="1234567890:AAExampleTokenHere"
-$env:TELEGRAM_ADMIN_ID="123456789"
-```
-
-### Linux / macOS
+### Method 1: Using uv (Recommended)
 
 ```bash
-export TELEGRAM_TOKEN="1234567890:AAExampleTokenHere"
-export TELEGRAM_ADMIN_ID="123456789"
+# Create virtual environment and install dependencies
+uv venv
+uv sync
+
+# Run the bot
+uv run main.py
 ```
 
-Important:
-
-The variable names must match exactly:
-
-```text
-TELEGRAM_TOKEN
-TELEGRAM_ADMIN_ID
-```
-
-If your code reads these names, users only need to create the variables with the same names and the bot will work without editing the source code.
-
-## Install Dependencies
+### Method 2: Using pip
 
 ```bash
+# Create virtual environment
+python -m venv .venv
+
+# Activate (Windows)
+.venv\Scripts\activate
+# Activate (Linux/macOS)
+source .venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-Or install manually if no requirements file is provided.
-```bash
-pip install pyTelegramBotAPI
-```
-
-## Running the Bot
-
-Open a terminal in the project folder and run:
-
-```bash
+# Run the bot
 python main.py
 ```
 
-If everything is configured correctly, the bot should start and wait for commands.
+## Configuration
 
-Example:
+Set the following environment variables:
 
-```text
-Bot started successfully.
-Waiting for Telegram messages...
-```
+* `TELEGRAM_TOKEN`: Your bot token from @BotFather.
+* `TELEGRAM_ADMIN_ID`: Your numeric Telegram ID.
 
-## Troubleshooting
+## Commands
 
-### TELEGRAM_TOKEN is missing
-
-Make sure the environment variable exists:
-
-```cmd
-echo %TELEGRAM_TOKEN%
-```
-
-### TELEGRAM_ADMIN_ID is missing
-
-Check:
-
-```cmd
-echo %TELEGRAM_ADMIN_ID%
-```
-
-### Bot does not respond
-
-* Verify the token is correct.
-* Make sure you started a chat with the bot.
-* Make sure your Telegram ID matches `TELEGRAM_ADMIN_ID`.
-* Check the terminal for error messages.
+* `/start` - Displays instructions.
+* `/ping` - Checks bot status.
+* `/run <file.py>` - Executes a Python file (Admin only).
+* `/log` - Shows the last 20 log lines (Admin only).
+* `/status` - Shows bot status.
 
 ## Security Notes
 
-Never publish your Telegram Bot Token.
-
-Do not commit your token to GitHub.
-
-Use environment variables instead of hardcoding secrets into the source code.
+* Never share or commit your `TELEGRAM_TOKEN`.
+* Use environment variables to manage sensitive data.
 
 ## License
 
