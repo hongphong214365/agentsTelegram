@@ -8,7 +8,7 @@ frozenlist==1.8.0
 idna==3.18
 multidict==6.7.1
 propcache==0.5.2
-pyTelegramBotAPI==4.36.0
+pyTelegramBotAPI==4.36.1
 requests==2.34.2
 urllib3==2.7.0
 yarl==1.24.5
