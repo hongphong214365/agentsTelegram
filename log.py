@@ -18,6 +18,9 @@ def get_last_logs(lines: int = LOG_LINES) -> str:
         return f"Đã có lỗi khi đọc log: {e}"
 
 
+# Đảm bảo thư mục chứa file log tồn tại trước khi ghi log
+LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+
 logging.basicConfig(
     filename=str(LOG_FILE),
     level=LEVEL,
