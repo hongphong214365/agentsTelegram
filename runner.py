@@ -2,7 +2,6 @@ import subprocess
 import os
 import logging
 from config import RUN_TIMEOUT
-import log  # Import log module để basicConfig được setup
 
 # Lấy logger của module này
 logger = logging.getLogger(__name__)
