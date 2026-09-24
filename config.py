@@ -15,15 +15,33 @@ LEVEL = logging.INFO
 RUN_TIMEOUT = 30
 # Đuôi file.
 FILE_EXTENSION = ".py"
-if not TOKEN:
-    sys.exit("Lỗi: Chưa cấu hình biến môi trường 'TELEGRAM_TOKEN'.")
+ADMIN_ID: int | None = None
+if ADMIN_ID_RAW:
+    try:
+        ADMIN_ID = int(ADMIN_ID_RAW)
+    except ValueError:
+        ADMIN_ID = None
 
-if not ADMIN_ID_RAW:
-    sys.exit("Lỗi: Chưa cấu hình biến môi trường 'TELEGRAM_ADMIN_ID'.")
 
-try:
-    ADMIN_ID = int(ADMIN_ID_RAW)
-except ValueError:
-    sys.exit(
-        f"Lỗi: 'TELEGRAM_ADMIN_ID' phải là một số nguyên, nhận được: '{ADMIN_ID_RAW}'."
-    )
+def validate_environment() -> tuple[bool, list[str]]:
+    """
+    Kiểm tra các biến môi trường cần thiết cho ứng dụng.
+    Trả về (is_ok, danh_sách_lỗi).
+    """
+    errors: list[str] = []
+    if not TOKEN:
+        errors.append("TELEGRAM_TOKEN is missing in environment variables.")
+    elif ":" not in TOKEN:
+        errors.append("TELEGRAM_TOKEN format is invalid (expected '<bot_id>:<token>').")
+
+    if not ADMIN_ID_RAW:
+        errors.append("TELEGRAM_ADMIN_ID is missing in environment variables.")
+    else:
+        try:
+            int(ADMIN_ID_RAW)
+        except ValueError:
+            errors.append(
+                f"TELEGRAM_ADMIN_ID must be an integer, got '{ADMIN_ID_RAW}'."
+            )
+
+    return len(errors) == 0, errors
