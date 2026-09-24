@@ -38,6 +38,9 @@ def register_run(bot: telebot.TeleBot):
             file_name = parts[1]
             # Kiểm tra đuôi file .py
             if not file_name.endswith(FILE_EXTENSION):
+                logger.warning(
+                    f"Execution request by user {message.chat.id} rejected: invalid extension for '{file_name}'"
+                )
                 bot.reply_to(
                     message, "File không hợp lệ, chỉ file .py mới được phép chạy"
                 )
@@ -45,12 +48,16 @@ def register_run(bot: telebot.TeleBot):
 
             # Kiểm tra file tồn tại.
             if not file_exists_exact(file_name):
+                logger.warning(
+                    f"Execution request by user {message.chat.id} failed: file '{file_name}' not found."
+                )
                 bot.reply_to(
                     message,
                     "Không tìm thấy file. Hãy kiểm tra lại tên file và chữ hoa/chữ thường.",
                 )
                 return
 
+            logger.info(f"User {message.chat.id} triggered run command for '{file_name}'")
             out, err = run_python(file_name)
 
             if err:

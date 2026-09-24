@@ -1,5 +1,6 @@
 import subprocess
 import os
+import time
 import logging
 from config import RUN_TIMEOUT
 
@@ -22,6 +23,10 @@ def run_python(file_name):
     Returns:
         tuple: (stdout, stderr)
     """
+    start_time = time.time()
+    start_time_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_time))
+    logger.info(f"Started executing file '{file_name}' at {start_time_str}")
+
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONUTF8"] = "1"
@@ -36,19 +41,29 @@ def run_python(file_name):
             errors="replace",
         )
         stdout, stderr = process.communicate(timeout=RUN_TIMEOUT)
+        duration = time.time() - start_time
         
-        # Ghi log nếu có lỗi
+        # Ghi log kết quả
         if stderr:
-            logger.error(f"Lỗi khi chạy {file_name}: {stderr[:200]}")
+            logger.error(
+                f"Execution of '{file_name}' finished with errors in {duration:.2f}s: {stderr[:200]}"
+            )
+        else:
+            logger.info(
+                f"Execution of '{file_name}' completed successfully in {duration:.2f}s"
+            )
         
         return stdout, stderr
     except subprocess.TimeoutExpired:
-        logger.warning(f"Timeout khi chạy {file_name} (>30 giây)")
+        duration = time.time() - start_time
+        logger.warning(
+            f"Execution of '{file_name}' timed out after {duration:.2f}s (limit: {RUN_TIMEOUT}s)"
+        )
         process.kill()
         return "", "Timeout: Chạy quá thời gian cho phép"
     except OSError as e:
-        logger.error(f"OSError khi chạy {file_name}: {e}")
+        logger.error(f"OSError executing '{file_name}': {e}")
         return "", "Lỗi: File không tìm thấy hoặc không chạy được"
     except Exception as e:
-        logger.exception(f"Lỗi chạy {file_name}")
+        logger.exception(f"Unexpected error executing '{file_name}'")
         return "", f"Lỗi: {str(e)}"
