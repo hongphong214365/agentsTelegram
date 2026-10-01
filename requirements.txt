@@ -44,7 +44,7 @@ pytest==9.1.1
     # via agentstelegram
 requests==2.34.2
     # via pytelegrambotapi
-urllib3==2.7.0
+urllib3==2.8.0
     # via requests
 yarl==1.24.5
     # via aiohttp
