@@ -38,7 +38,7 @@ propcache==0.5.4
     #   yarl
 pygments==2.21.0
     # via pytest
-pytelegrambotapi==4.36.1
+pytelegrambotapi==4.37.0
     # via agentstelegram
 pytest==9.1.1
     # via agentstelegram
