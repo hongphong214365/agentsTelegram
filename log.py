@@ -26,6 +26,7 @@ def _setup_logging():
             level=LEVEL,
             format="%(asctime)s | %(levelname)s | %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
+            encoding="utf-8",
         )
         _logging_initialized = True
 
@@ -40,9 +41,6 @@ def startup_log():
     logger.info("===== Khởi động module Nhật Ký =====")
 
 
-<<<<<<< HEAD
-def get_last_logs(lines: int = LOG_LINES) -> str:
-=======
 # Hàm xử lý.
 def set_log_level(level: str | int) -> str:
     """
@@ -74,6 +72,7 @@ def set_log_level(level: str | int) -> str:
 
 def get_current_log_level() -> str:
     """Trả về tên cấp độ log hiện tại."""
+    _setup_logging()
     level = logging.getLogger().getEffectiveLevel()
     return logging.getLevelName(level)
 
@@ -103,7 +102,6 @@ def get_last_logs(
     """
     Đọc các dòng log cuối cùng, hỗ trợ lọc theo cấp độ (level) và mốc thời gian (time_filter).
     """
->>>>>>> 1f166c8 (feat(log): enhance logging with file execution tracking, level control, log cleaning, and startup diagnostics)
     try:
         if not LOG_FILE.exists():
             return "Chưa có file log."
@@ -123,14 +121,12 @@ def get_last_logs(
                 if tf in (line.split("|")[0] if "|" in line else line)
             ]
 
+        if lines <= 0:
+            return "Log hiện tại đang trống."
+
         return "".join(data[-lines:]) or "Log hiện tại đang trống."
     except Exception as e:
-<<<<<<< HEAD
         logger.exception("Lỗi khi đọc log")
         return f"Đã có lỗi khi đọc log: {e}"
-=======
-        logger.exception("Error reading log")
-        return f"Đã có lỗi khi đọc log: {e}"
 
->>>>>>> 1f166c8 (feat(log): enhance logging with file execution tracking, level control, log cleaning, and startup diagnostics)
 

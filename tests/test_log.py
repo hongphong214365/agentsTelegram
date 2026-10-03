@@ -143,6 +143,21 @@ def test_parse_log_args():
     opts = parse_log_args(["--set-level=debug"])
     assert opts["set_level"] == "debug"
 
+    # Test -get-level và --get-level
+    assert parse_log_args(["-get-level"])["get_level"] is True
+    assert parse_log_args(["--get-level"])["get_level"] is True
+
+    # Test truyền số dòng trực tiếp
+    assert parse_log_args(["30"])["lines"] == 30
+
+
+def test_get_last_logs_zero_or_negative_lines(tmp_path):
+    fake_log_file = tmp_path / "test_zero.log"
+    fake_log_file.write_text("Dòng 1\nDòng 2\n", encoding="utf-8")
+    with patch("log.LOG_FILE", fake_log_file):
+        assert log.get_last_logs(lines=0) == "Log hiện tại đang trống."
+        assert log.get_last_logs(lines=-5) == "Log hiện tại đang trống."
+
 
 def test_validate_environment():
     import config

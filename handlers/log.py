@@ -13,13 +13,14 @@ from log import (
 def parse_log_args(parts: list[str]) -> dict:
     """
     Phân tích các tham số truyền vào lệnh /log.
-    Hỗ trợ cả tiền tố '-' và '--'.
+    Hỗ trợ cả tiền tố '-' và '--', cùng khả năng truyền số dòng trực tiếp.
     """
     options: dict = {
         "clean": False,
         "level": None,
         "time": None,
         "set_level": None,
+        "get_level": False,
         "lines": LOG_LINES,
     }
 
@@ -28,6 +29,8 @@ def parse_log_args(parts: list[str]) -> dict:
         lower = cleaned.lower()
         if lower in ("-clean", "--clean"):
             options["clean"] = True
+        elif lower in ("-get-level", "--get-level", "-current-level", "--current-level"):
+            options["get_level"] = True
         elif lower.startswith(("-set-level=", "--set-level=")):
             options["set_level"] = cleaned.split("=", 1)[1].strip()
         elif lower.startswith(("-level=", "--level=")):
@@ -39,6 +42,8 @@ def parse_log_args(parts: list[str]) -> dict:
                 options["lines"] = max(1, int(cleaned.split("=", 1)[1].strip()))
             except ValueError:
                 pass
+        elif cleaned.isdigit():
+            options["lines"] = max(1, int(cleaned))
 
     return options
 
@@ -58,6 +63,16 @@ def register_logs(bot: telebot.TeleBot):
         if opts["clean"]:
             success, msg = clean_log_file()
             bot.reply_to(message, msg)
+            return
+
+        # Xử lý cờ xem cấp độ log hiện tại
+        if opts.get("get_level"):
+            current_lvl = get_current_log_level()
+            bot.reply_to(
+                message,
+                f"Cấp độ log hiện tại: <b>{current_lvl}</b>",
+                parse_mode="HTML",
+            )
             return
 
         # Xử lý cờ thay đổi cấp độ log runtime

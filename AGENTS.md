@@ -139,7 +139,11 @@ agent/
 │   ├── ping.py
 │   ├── log.py
 │   ├── start.py
-│   └── run.py
+│   ├── run.py
+│   └── status.py
+├── tests/
+│   └── test_log.py
+├── pyproject.toml
 ├── Backup/
 └── temp/
 
