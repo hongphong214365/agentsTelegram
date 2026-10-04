@@ -5,7 +5,7 @@ description = "Simple Telegram bot to run Python files remotely and return outpu
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "pytelegrambotapi>=4.36.0",
+    "pytelegrambotapi>=4.37.0",
     "pytest>=9.1.1",
 ]
 
