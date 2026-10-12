@@ -24,7 +24,7 @@ idna==3.20
     #   yarl
 iniconfig==2.3.0
     # via pytest
-multidict==6.7.1
+multidict==7.0.0
     # via
     #   aiohttp
     #   yarl
