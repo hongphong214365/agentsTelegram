@@ -46,5 +46,5 @@ requests==2.34.2
     # via pytelegrambotapi
 urllib3==2.8.0
     # via requests
-yarl==1.24.5
+yarl==1.25.1
     # via aiohttp
