@@ -61,7 +61,7 @@ source .venv/bin/activate
 Cài thư viện và chạy bot:
 
 ```bash
-pip install -r requirements.txt
+pip install -r setup/requirements.txt
 python main.py
 ```
 

@@ -143,6 +143,8 @@ agent/
 │   └── status.py
 ├── tests/
 │   └── test_log.py
+├── setup/
+│   └── requirements.txt
 ├── pyproject.toml
 ├── Backup/
 └── temp/

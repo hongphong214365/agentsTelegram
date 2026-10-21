@@ -26,15 +26,15 @@ jobs:
 
       - name: Export requirements.txt from uv.lock
         run: |
-          #Export trực tiếp từ uv.lock ra requirements.txt
-          uv export --format requirements-txt --output-file requirements.txt --no-hashes
+          #Export trực tiếp từ uv.lock ra setup/requirements.txt
+          uv export --format requirements-txt --output-file setup/requirements.txt --no-hashes
 
       - name: Commit changes
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add requirements.txt
+          git add setup/requirements.txt
           if ! git diff --cached --quiet; then
             git commit -m "chore(deps): export updated requirements.txt"
             git push

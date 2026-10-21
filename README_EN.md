@@ -61,7 +61,7 @@ source .venv/bin/activate
 Install dependencies and run the bot:
 
 ```bash
-pip install -r requirements.txt
+pip install -r setup/requirements.txt
 python main.py
 ```
 
