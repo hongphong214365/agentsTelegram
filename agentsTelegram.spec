@@ -4,7 +4,7 @@
 a = Analysis(
     ['main.py'],
     pathex=[],
-    binaries=[],
+    binaries=[('D:\Python\Python314\python314.dll', '.')],
     datas=[],
     hiddenimports=[],
     hookspath=[],
@@ -19,7 +19,9 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    [],
+    a.binaries,
+    a.zipfiles,
+    a.datas, 
     exclude_binaries=False,
     version='version.txt',
     name='agentsTelegram',
@@ -33,13 +35,4 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-)
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='agentsTelegram',
 )
