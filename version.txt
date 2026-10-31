@@ -1,0 +1,28 @@
+# UTF-8
+#
+VSVersionInfo(
+  ffi=FixedFileInfo(
+    filevers=(0, 1, 0, 0),
+    prodvers=(0, 1, 0, 0),
+    mask=0x3f,
+    flags=0x0,
+    OS=0x4,
+    fileType=0x1,
+    subtype=0x0,
+    date=(0, 0)
+  ),
+  kids=[
+    StringFileInfo(
+      [
+      StringTable(
+        u'040904B0',
+        [StringStruct(u'CompanyName', u'Phong'),
+         StringStruct(u'FileDescription', u'Simple Telegram bot to run Python files remotely and return output or errors'),
+         StringStruct(u'FileVersion', u'0.1.0'),
+         StringStruct(u'ProductName', u'agentsTelegram'),
+         StringStruct(u'ProductVersion', u'0.1.0')])
+      ]
+    ),
+    VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
+  ]
+)
