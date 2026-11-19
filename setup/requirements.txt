@@ -54,7 +54,7 @@ pyinstaller-hooks-contrib==2026.9
     # via pyinstaller
 pytelegrambotapi==4.37.1
     # via agentstelegram
-pytest==9.1.1
+pytest==9.2.0
     # via agentstelegram
 pywin32-ctypes==0.2.3 ; sys_platform == 'win32'
     # via pyinstaller
