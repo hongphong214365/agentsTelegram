@@ -19,8 +19,9 @@ def register_run(bot: telebot.TeleBot):
     @bot.message_handler(commands=["run"])
     def run_file(message):
         # Kiểm tra ID người dùng
-        if message.chat.id != ADMIN_ID:
+        if message.from_user is None or message.from_user.id != ADMIN_ID:
             return
+        user_id = message.from_user.id
         # Chống spam
         global last_run
         if time.time() - last_run < 15:
@@ -39,7 +40,7 @@ def register_run(bot: telebot.TeleBot):
             # Kiểm tra đuôi file .py
             if not file_name.endswith(FILE_EXTENSION):
                 logger.warning(
-                    f"Execution request by user {message.chat.id} rejected: invalid extension for '{file_name}'"
+                    f"Execution request by user {user_id} rejected: invalid extension for '{file_name}'"
                 )
                 bot.reply_to(
                     message, "File không hợp lệ, chỉ file .py mới được phép chạy"
@@ -49,7 +50,7 @@ def register_run(bot: telebot.TeleBot):
             # Kiểm tra file tồn tại.
             if not file_exists_exact(file_name):
                 logger.warning(
-                    f"Execution request by user {message.chat.id} failed: file '{file_name}' not found."
+                    f"Execution request by user {user_id} failed: file '{file_name}' not found."
                 )
                 bot.reply_to(
                     message,
@@ -57,7 +58,7 @@ def register_run(bot: telebot.TeleBot):
                 )
                 return
 
-            logger.info(f"User {message.chat.id} triggered run command for '{file_name}'")
+            logger.info(f"User {user_id} triggered run command for '{file_name}'")
             out, err = run_python(file_name)
 
             if err:
