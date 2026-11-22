@@ -1,4 +1,5 @@
 import logging
+import os
 import threading
 from config import LOG_FILE, LOG_LINES, LEVEL
 
@@ -11,6 +12,12 @@ _logging_initialized = False
 
 def _ensure_logging_dir():
     """Đảm bảo thư mục log tồn tại."""
+    if os.name == "posix":
+        LOG_FILE.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        LOG_FILE.parent.chmod(0o700)
+        LOG_FILE.touch(mode=0o600, exist_ok=True)
+        LOG_FILE.chmod(0o600)
+        return
     LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 

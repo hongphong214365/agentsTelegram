@@ -1,7 +1,19 @@
+import os
+import stat
 import pytest
 from pathlib import Path
 from unittest.mock import patch
 import log
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX file modes are not supported")
+def test_log_directory_and_file_permissions_are_restricted(tmp_path):
+    fake_log_file = tmp_path / "temp" / "agent.log"
+    with patch("log.LOG_FILE", fake_log_file):
+        log._ensure_logging_dir()
+
+    assert stat.S_IMODE(fake_log_file.parent.stat().st_mode) == 0o700
+    assert stat.S_IMODE(fake_log_file.stat().st_mode) == 0o600
 
 
 def test_log_directory_exists():
