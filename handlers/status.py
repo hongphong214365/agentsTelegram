@@ -20,6 +20,6 @@ def register_status(bot: telebot.TeleBot):
     # Hàm kiểm tra trạng thái chi tiết của bot.
     @bot.message_handler(commands=["status"])
     def status(message):
-        if message.chat.id != ADMIN_ID:
+        if message.from_user is None or message.from_user.id != ADMIN_ID:
             return
         bot.reply_to(message, get_info())

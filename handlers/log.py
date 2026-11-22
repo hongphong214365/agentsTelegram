@@ -51,13 +51,14 @@ def parse_log_args(parts: list[str]) -> dict:
 def register_logs(bot: telebot.TeleBot):
     @bot.message_handler(commands=["log"])
     def show_log(message):
-        if message.chat.id != ADMIN_ID:
+        if message.from_user is None or message.from_user.id != ADMIN_ID:
             return
+        user_id = message.from_user.id
 
         parts = message.text.split()[1:]
         opts = parse_log_args(parts)
 
-        logger.info(f"User {message.chat.id} executed /log with command: '{message.text}'")
+        logger.info(f"User {user_id} executed /log with command: '{message.text}'")
 
         # Xử lý cờ dọn dẹp file log
         if opts["clean"]:
