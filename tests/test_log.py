@@ -1,3 +1,4 @@
+import logging
 import pytest
 from pathlib import Path
 from unittest.mock import patch
@@ -68,6 +69,43 @@ def test_set_and_get_log_level():
         assert log.get_current_log_level() == "INFO"
     finally:
         log.set_log_level(old_level)
+
+
+def test_set_debug_keeps_http_client_logs_suppressed(caplog):
+    root_logger = logging.getLogger()
+    http_logger_names = (
+        "urllib3",
+        "urllib3.connectionpool",
+        "requests.packages.urllib3",
+        "requests.packages.urllib3.connectionpool",
+    )
+    old_root_level = root_logger.level
+    old_app_level = log.logger.level
+    old_http_levels = {
+        name: logging.getLogger(name).level for name in http_logger_names
+    }
+    old_handler_levels = [
+        (handler, handler.level) for handler in root_logger.handlers
+    ]
+
+    try:
+        with caplog.at_level(logging.DEBUG):
+            log.set_log_level("DEBUG")
+            log.logger.debug("application debug message")
+            for name in http_logger_names:
+                logging.getLogger(name).debug(
+                    "https://api.telegram.org/bot123456:secret-token/sendMessage"
+                )
+
+        assert "application debug message" in caplog.text
+        assert "secret-token" not in caplog.text
+    finally:
+        root_logger.setLevel(old_root_level)
+        log.logger.setLevel(old_app_level)
+        for name, old_level in old_http_levels.items():
+            logging.getLogger(name).setLevel(old_level)
+        for handler, old_level in old_handler_levels:
+            handler.setLevel(old_level)
 
 
 def test_set_log_level_invalid():
