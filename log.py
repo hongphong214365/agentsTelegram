@@ -7,6 +7,12 @@ logger = logging.getLogger(__name__)
 # Lock để đảm bảo thread-safe
 _config_lock = threading.Lock()
 _logging_initialized = False
+_HTTP_CLIENT_LOGGERS = (
+    "urllib3",
+    "urllib3.connectionpool",
+    "requests.packages.urllib3",
+    "requests.packages.urllib3.connectionpool",
+)
 
 
 def _ensure_logging_dir():
@@ -61,6 +67,8 @@ def set_log_level(level: str | int) -> str:
 
     with _config_lock:
         root_logger = logging.getLogger()
+        for logger_name in _HTTP_CLIENT_LOGGERS:
+            logging.getLogger(logger_name).setLevel(logging.WARNING)
         root_logger.setLevel(numeric_level)
         for handler in root_logger.handlers:
             handler.setLevel(numeric_level)
